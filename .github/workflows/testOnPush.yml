@@ -1,0 +1,15 @@
+name: testOnPush
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+      - name: setup
+        run: make setup
+      - name: test
+        run: make test
+      - name: lint
+        run: make lint
