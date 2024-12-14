@@ -1,5 +1,5 @@
-setup:
-	install build
+install:
+	npm ci
 lint:
 	npx eslint .
 test:
