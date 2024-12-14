@@ -6,9 +6,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-      - run: npm ci
-      - name: setup
-        run: make setup
+      - name: install
+        run: make install
       - name: test
         run: make test
       - name: lint
