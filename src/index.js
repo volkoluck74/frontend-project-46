@@ -3,6 +3,40 @@ import path from 'path';
 import process from 'process';
 import getParseFile from './utils/parsers.js';
 
+function stringfy(data, symb = ' ', spacer = 1) {
+  if (typeof data !== 'object') return data.toString();
+  const saveSpaceCount = spacer;
+  function hiddenfunc(obj, replacer, spaceCount) {
+    let cnt = 1;
+    function cb(acc, key, index, array) {
+      let newAcc = acc;
+      if (obj[key] === null) {
+        newAcc += `${replacer.repeat(spaceCount)}null: null`;
+        if (index !== array.length - 1) newAcc += '\n';
+      }
+      if (typeof obj[key] !== 'object') {
+        newAcc += `${replacer.repeat(spaceCount)}${key}: ${obj[key]}`;
+        if (index !== array.length - 1) newAcc += '\n';
+      }
+      if (typeof obj[key] === 'object' && obj[key] !== null) {
+        newAcc += `${replacer.repeat(spaceCount)}${key}: ${hiddenfunc(obj[key], replacer, spaceCount + saveSpaceCount)}`;
+        if (spaceCount >= saveSpaceCount) newAcc += '\n';
+        newAcc += `${replacer.repeat(spaceCount)}}`;
+      }
+      return newAcc;
+    }
+    if (typeof obj !== 'object') return obj.toString();
+    if (typeof obj === 'object' && obj !== null) {
+      let result = cnt === 1 ? '{\n' : '{';
+      result += Object.keys(obj).reduce(cb, '');
+      cnt += 1;
+      return result;
+    }
+    return 'null';
+  }
+  if (data === null) return `${hiddenfunc(data, symb, spacer)}`;
+  return `${hiddenfunc(data, symb, spacer)}\n${symb.repeat(spacer - 1)}}`;
+}
 // Функция получает абсолютный путь
 const getAbsFilePath = (filepath) => path.resolve(process.cwd(), filepath);
 // Функция получает тип файла
@@ -25,12 +59,12 @@ function diff(obj1, obj2) {
     function cb(acc, key) {
       // Если значение ключа не является объектом
       let newAcc = acc;
-      if (typeof first[key] !== 'object' && typeof second[key] !== 'object') {
-        if (Object.hasOwn(first, key) && Object.hasOwn(second, key) && first[key] === second[key]) newAcc += `${(separator).repeat(level)}  ${key}: ${first[key]}\n`;
-        if (Object.hasOwn(first, key) && Object.hasOwn(second, key) && first[key] !== second[key]) newAcc += `${(separator).repeat(level)}- ${key}: ${first[key]}\n`;
-        if (Object.hasOwn(first, key) && Object.hasOwn(second, key) && first[key] !== second[key]) newAcc += `${(separator).repeat(level)}+ ${key}: ${second[key]}\n`;
-        if (Object.hasOwn(first, key) && !Object.hasOwn(second, key)) newAcc += `${(separator).repeat(lvl)}- ${key}: ${first[key]}\n`;
-        if (!Object.hasOwn(first, key) && Object.hasOwn(second, key)) newAcc += `${(separator).repeat(lvl)}+ ${key}: ${second[key]}\n`;
+      if ((typeof first[key] !== 'object' || typeof second[key] !== 'object') || second[key] == null || first[key] == null) {
+        if (Object.hasOwn(first, key) && Object.hasOwn(second, key) && first[key] === second[key]) newAcc += `${(separator).repeat(lvl)}  ${key}: ${stringfy(first[key], '  ', lvl + 1)}\n`;
+        if (Object.hasOwn(first, key) && Object.hasOwn(second, key) && first[key] !== second[key]) newAcc += `${(separator).repeat(lvl)}- ${key}: ${stringfy(first[key], '  ', lvl + 1)}\n`;
+        if (Object.hasOwn(first, key) && Object.hasOwn(second, key) && first[key] !== second[key]) newAcc += `${(separator).repeat(lvl)}+ ${key}: ${stringfy(second[key], '  ', lvl + 1)}\n`;
+        if (Object.hasOwn(first, key) && !Object.hasOwn(second, key)) newAcc += `${(separator).repeat(lvl)}- ${key}: ${stringfy(first[key], '  ', lvl + 1)}\n`;
+        if (!Object.hasOwn(first, key) && Object.hasOwn(second, key)) newAcc += `${(separator).repeat(lvl)}+ ${key}: ${stringfy(second[key], '  ', lvl + 1)}\n`;
       } else {
         newAcc += `${(separator).repeat(lvl)}  ${key}: {\n`;
         newAcc += `${hiddenDiff(first[key], second[key], lvl + 1)}`;
