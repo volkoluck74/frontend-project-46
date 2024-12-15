@@ -1,4 +1,4 @@
-name: testOnPush
+name: Auto-check
 on: push
 jobs:
   build:
