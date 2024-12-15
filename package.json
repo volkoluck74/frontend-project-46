@@ -6,14 +6,15 @@
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "commander": "^12.1.0"
+    "commander": "^12.1.0",
+    "js-yaml": "^4.1.0"
   },
   "devDependencies": {
     "@eslint/create-config": "^1.0.0",

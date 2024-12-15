@@ -1,16 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 import process from 'process';
+import getParseFile from './utils/parsers.js';
 
 // Функция получает абсолютный путь
 const getAbsFilePath = (filepath) => path.resolve(process.cwd(), filepath);
 // Функция получает тип файла
 const getFileType = (filepath) => path.extname(filepath);
-// Функция получает объект в зависимости от переданного формата
-const getParseFile = (file, fileType) => {
-  if (fileType === '.json') return JSON.parse(file);
-  return null;
-};
 // Функция выводит результат сравнения двух объектов
 function diff(obj1, obj2) {
   // Уровень вложенности
