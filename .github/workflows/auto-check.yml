@@ -13,8 +13,6 @@ jobs:
       - name: lint
         run: make lint
       - name: Test & publish code coverage
-        Publish code coverage on Code Climate
-        https://github.com/paambaati/codeclimate-action
         uses: paambaati/codeclimate-action@v5.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
