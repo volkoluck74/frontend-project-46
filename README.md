@@ -3,9 +3,6 @@
 
 [![Auto-check](https://github.com/volkoluck74/frontend-project-46/actions/workflows/auto-check.yml/badge.svg)](https://github.com/volkoluck74/frontend-project-46/actions/workflows/auto-check.yml)
 
-
-
-The workflow is not valid. .github/workflows/auto-check.yml (Line: 20, Col: 12): A mapping was not expected
-
+[![Test Coverage](https://api.codeclimate.com/v1/badges/d138ce494d9c0ef7f4dd/test_coverage)](https://codeclimate.com/github/volkoluck74/frontend-project-46/test_coverage)
 
 https://asciinema.org/a/e2h0hA78S0ekahGBIUN2U5qrC
