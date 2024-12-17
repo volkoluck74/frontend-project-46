@@ -8,3 +8,6 @@ json
 https://asciinema.org/a/e2h0hA78S0ekahGBIUN2U5qrC
 yml
 https://asciinema.org/a/KHQ9CU68MtI8SN1H6uobMfLMZ
+obj
+https://asciinema.org/a/pfDls4vBvMMdUUIMc43Fjjure
+
