@@ -10,4 +10,5 @@ yml
 https://asciinema.org/a/KHQ9CU68MtI8SN1H6uobMfLMZ
 obj
 https://asciinema.org/a/pfDls4vBvMMdUUIMc43Fjjure
-
+plain
+https://asciinema.org/a/HpjxTZFT5Ns9FTkPOnx8wWAFk
