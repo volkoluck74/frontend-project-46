@@ -3,11 +3,11 @@ import path from 'path';
 import process from 'process';
 import getParseFile from './utils/parsers.js';
 import diff from './utils/diff.js';
-import formater from './utils/formater.js';
+import formatter from './formatters/index.js';
 
 const getAbsFilePath = (filepath) => path.resolve(process.cwd(), filepath);
 const getFileType = (filepath) => path.extname(filepath);
-export default function gendiff(filepath1, filepath2, stylish) {
+export default function gendiff(filepath1, filepath2, format) {
   const absFilepath1 = getAbsFilePath(filepath1);
   const absFilepath2 = getAbsFilePath(filepath2);
   const fileType1 = getFileType(absFilepath1);
@@ -17,5 +17,5 @@ export default function gendiff(filepath1, filepath2, stylish) {
   const parseFile1 = getParseFile(file1, fileType1);
   const parseFile2 = getParseFile(file2, fileType2);
   const resultOfDiff = diff(parseFile1, parseFile2);
-  return formater(stylish)(resultOfDiff);
+  return formatter(format)(resultOfDiff);
 }
