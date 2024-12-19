@@ -12,3 +12,5 @@ obj
 https://asciinema.org/a/pfDls4vBvMMdUUIMc43Fjjure
 plain
 https://asciinema.org/a/HpjxTZFT5Ns9FTkPOnx8wWAFk
+json 
+https://asciinema.org/a/3tESzanhXhmCYc3bQz6oJArJG
