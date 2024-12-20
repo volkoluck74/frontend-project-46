@@ -1,5 +1,8 @@
 // Функция определяет формат вывода значения свойства в зависимости от типа свойства
 function getFormatedValue(objValue) {
+  const typeofObjValue = typeof objValue;
+  if (typeofObjValue === 'object' && objValue !== null) return '[complex value]';
+  if (typeofObjValue === 'boolean' || objValue === null || typeofObjValue === 'number') return `${objValue}`;
   if (typeof objValue === 'object' && objValue !== null) return '[complex value]';
   if (typeof objValue === 'boolean' || objValue === null || typeof objValue === 'number') return `${objValue}`;
   return `'${objValue}'`;
@@ -30,5 +33,5 @@ export default function plain(data) {
     }
     return newAcc;
   }
-  return `${data.reduce(cb, '')}`;
+  return `${data.reduce(cb, '').replace(/\n$/m, '')}`;
 }
