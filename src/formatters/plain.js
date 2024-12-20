@@ -30,5 +30,5 @@ export default function plain(data) {
     }
     return newAcc;
   }
-  return `${data.reduce(cb, '').replace(/\n$m, '')}`;
+  return `${data.reduce(cb, '')}`;
 }
