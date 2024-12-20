@@ -1,7 +1,7 @@
 // Функция определяет формат вывода значения свойства в зависимости от типа свойства
 function getFormatedValue(objValue) {
   if (typeof objValue === 'object' && objValue !== null) return '[complex value]';
-  if (typeof objValue === 'boolean' || objValue === null) return `${objValue}`;
+  if (typeof objValue === 'boolean' || objValue === null || typeof objValue === 'number') return `${objValue}`;
   return `'${objValue}'`;
 }
 // Форматер 'plain
