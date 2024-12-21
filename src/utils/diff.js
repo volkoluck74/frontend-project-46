@@ -1,3 +1,4 @@
+import _ from 'lodash';
 // Функция сравнивает два объекта и возвраащет массив объектов, со свойствами, соответствующими
 // результатам сравнения
 export default function diff(obj1, obj2) {
@@ -5,10 +6,10 @@ export default function diff(obj1, obj2) {
   const secondKeys = Object.keys(obj2);
   const keys = firstKeys.concat(secondKeys);
   // Фильтруем уникальные значения объединенного массива и сортируем их
-  const uniqueKeys = keys.reduce((acc, key) => {
+  const uniqueKeys = _.sortBy(keys.reduce((acc, key) => {
     if (acc.includes(key)) return acc;
     return [...acc, key];
-  }, []).sort();
+  }, []));
   function cb(key) {
     const value1 = obj1[key];
     const value2 = obj2[key];
