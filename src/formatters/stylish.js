@@ -1,6 +1,6 @@
 // Функция получает на вход объект и выводит строку, соответствующую формута
 // JSON для рассматриваеомго объекта
-function stringify(data, symb = ' ', spacer = 1) {
+function stringify(data, symb, spacer) {
   if (typeof data !== 'object') return data.toString();
   function hiddenfunc(obj, replacer, spaceCount) {
     function cb(acc, key, index, array) {
@@ -28,23 +28,27 @@ function stringify(data, symb = ' ', spacer = 1) {
 
 export default function stylish(data) {
   const spacer = '    ';
-  let level = 1;
-  function hiddenfunc(object) {
+  const level = 1;
+  function hiddenfunc(object, lvl) {
     function cb(acc, obj) {
-      let newAcc = acc;
-      if (obj.status === 'added') newAcc += `${spacer.repeat(level - 1)}  + ${obj.key}: ${stringify(obj.value2, spacer, level + 1)}\n`;
-      if (obj.status === 'deleted') newAcc += `${spacer.repeat(level - 1)}  - ${obj.key}: ${stringify(obj.value1, spacer, level + 1)}\n`;
-      if (obj.status === 'changed') newAcc += `${spacer.repeat(level - 1)}  - ${obj.key}: ${stringify(obj.value1, spacer, level + 1)}\n`;
-      if (obj.status === 'changed') newAcc += `${spacer.repeat(level - 1)}  + ${obj.key}: ${stringify(obj.value2, spacer, level + 1)}\n`;
-      if (obj.status === 'unchanged') newAcc += `${spacer.repeat(level - 1)}    ${obj.key}: ${stringify(obj.value1, spacer, level + 1)}\n`;
-      if (Object.hasOwn(obj, 'childObjects')) {
-        level += 1;
-        newAcc += `${spacer.repeat(level - 1)}${obj.key}: ${stringify(hiddenfunc(obj.childObjects), spacer, level)}\n`;
-        level -= 1;
+      if (obj.status === 'added') {
+        return [...acc, `${spacer.repeat(lvl - 1)}  + ${obj.key}: ${stringify(obj.value2, spacer, lvl + 1)}\n`];
       }
-      return newAcc;
+      if (obj.status === 'deleted') {
+        return [...acc, `${spacer.repeat(lvl - 1)}  - ${obj.key}: ${stringify(obj.value1, spacer, lvl + 1)}\n`];
+      }
+      if (obj.status === 'changed') {
+        return [...acc, `${spacer.repeat(lvl - 1)}  - ${obj.key}: ${stringify(obj.value1, spacer, lvl + 1)}\n${spacer.repeat(lvl - 1)}  + ${obj.key}: ${stringify(obj.value2, spacer, lvl + 1)}\n`];
+      }
+      if (obj.status === 'unchanged') {
+        return [...acc, `${spacer.repeat(lvl - 1)}    ${obj.key}: ${stringify(obj.value1, spacer, lvl + 1)}\n`];
+      }
+      if (Object.hasOwn(obj, 'childObjects')) {
+        return [...acc, `${spacer.repeat(lvl)}${obj.key}: ${hiddenfunc(obj.childObjects, lvl + 1)}`];
+      }
+      return acc;
     }
-    return `{\n${object.reduce(cb, '')}${spacer.repeat(level - 1)}}`;
+    return `{\n${object.reduce(cb, '').join('')}${spacer.repeat(lvl - 1)}}\n`;
   }
-  return hiddenfunc(data);
+  return hiddenfunc(data, level).replace(/\n$/m, '');
 }
