@@ -2,8 +2,8 @@
 function getFormatedValue(objValue) {
   const typeofObjValue = typeof objValue;
   if (typeofObjValue === 'object' && objValue !== null) return '[complex value]';
-  if (typeofObjValue === 'boolean' || objValue === null || typeofObjValue === 'number') return `${objValue}`;
-  return `'${objValue}'`;
+  if (typeofObjValue === 'string') return `'${objValue}'`;
+  return `${objValue}`;
 }
 // Форматер 'plain
 export default function plain(data) {
