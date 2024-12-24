@@ -28,3 +28,10 @@ test('json json test', () => {
 test('yaml json test', () => {
   expect(gendiff(getFixturePath('file1.yml'), getFixturePath('file2.yml'), 'json')).toEqual(readFile('json.txt'));
 });
+
+test('json-files non-formatters test', () => {
+  expect(gendiff(getFixturePath('file1.json'), getFixturePath('file2.json'))).toEqual(readFile('stylish.txt'));
+});
+test('yml-files non-formatters test', () => {
+  expect(gendiff(getFixturePath('file1.yml'), getFixturePath('file2.yml'))).toEqual(readFile('stylish.txt'));
+});

@@ -31,22 +31,20 @@ export default function stylish(data) {
   const level = 1;
   function hiddenfunc(object, lvl) {
     function cb(acc, obj) {
-      if (obj.status === 'added') {
-        return [...acc, `${spacer.repeat(lvl - 1)}  + ${obj.key}: ${stringify(obj.value2, spacer, lvl + 1)}\n`];
+      switch (obj.status) {
+        case 'added':
+          return [...acc, `${spacer.repeat(lvl - 1)}  + ${obj.key}: ${stringify(obj.value2, spacer, lvl + 1)}\n`];
+        case 'deleted':
+          return [...acc, `${spacer.repeat(lvl - 1)}  - ${obj.key}: ${stringify(obj.value1, spacer, lvl + 1)}\n`];
+        case 'changed':
+          return [...acc, `${spacer.repeat(lvl - 1)}  - ${obj.key}: ${stringify(obj.value1, spacer, lvl + 1)}\n${spacer.repeat(lvl - 1)}  + ${obj.key}: ${stringify(obj.value2, spacer, lvl + 1)}\n`];
+        case 'unchanged':
+          return [...acc, `${spacer.repeat(lvl - 1)}    ${obj.key}: ${stringify(obj.value1, spacer, lvl + 1)}\n`];
+        case 'parentObject':
+          return [...acc, `${spacer.repeat(lvl)}${obj.key}: ${hiddenfunc(obj.childObjects, lvl + 1)}`];
+        default:
+          throw new Error('Unknown object status');
       }
-      if (obj.status === 'deleted') {
-        return [...acc, `${spacer.repeat(lvl - 1)}  - ${obj.key}: ${stringify(obj.value1, spacer, lvl + 1)}\n`];
-      }
-      if (obj.status === 'changed') {
-        return [...acc, `${spacer.repeat(lvl - 1)}  - ${obj.key}: ${stringify(obj.value1, spacer, lvl + 1)}\n${spacer.repeat(lvl - 1)}  + ${obj.key}: ${stringify(obj.value2, spacer, lvl + 1)}\n`];
-      }
-      if (obj.status === 'unchanged') {
-        return [...acc, `${spacer.repeat(lvl - 1)}    ${obj.key}: ${stringify(obj.value1, spacer, lvl + 1)}\n`];
-      }
-      if (Object.hasOwn(obj, 'childObjects')) {
-        return [...acc, `${spacer.repeat(lvl)}${obj.key}: ${hiddenfunc(obj.childObjects, lvl + 1)}`];
-      }
-      return acc;
     }
     return `{\n${object.reduce(cb, '').join('')}${spacer.repeat(lvl - 1)}}\n`;
   }

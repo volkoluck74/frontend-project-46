@@ -10,22 +10,28 @@ export default function plain(data) {
   const path = [];
   function hiddenfunc(object, currentPath) {
     function cb(acc, obj) {
-      if (obj.status === 'added') {
-        const formatedValue2 = getFormatedValue(obj.value2);
-        return [...acc, `Property '${`${currentPath.join('')}${obj.key}`}' was added with value: ${formatedValue2}`];
+      switch (obj.status) {
+        case 'added': {
+          const formatedValue2 = getFormatedValue(obj.value2);
+          return [...acc, `Property '${`${currentPath.join('')}${obj.key}`}' was added with value: ${formatedValue2}`];
+        }
+        case 'deleted': {
+          return [...acc, `Property '${`${currentPath.join('')}${obj.key}`}' was removed`];
+        }
+        case 'changed': {
+          const formatedValue1 = getFormatedValue(obj.value1);
+          const formatedValue2 = getFormatedValue(obj.value2);
+          return [...acc, `Property '${`${currentPath.join('')}${obj.key}`}' was updated. From ${formatedValue1} to ${formatedValue2}`];
+        }
+        case 'parentObject': {
+          return [...acc, hiddenfunc(obj.childObjects, [...currentPath, `${obj.key}.`])];
+        }
+        case 'unchanged': {
+          return acc;
+        }
+        default:
+          throw new Error('Unknown object status');
       }
-      if (obj.status === 'deleted') {
-        return [...acc, `Property '${`${currentPath.join('')}${obj.key}`}' was removed`];
-      }
-      if (obj.status === 'changed') {
-        const formatedValue1 = getFormatedValue(obj.value1);
-        const formatedValue2 = getFormatedValue(obj.value2);
-        return [...acc, `Property '${`${currentPath.join('')}${obj.key}`}' was updated. From ${formatedValue1} to ${formatedValue2}`];
-      }
-      if (Object.hasOwn(obj, 'childObjects')) {
-        return [...acc, hiddenfunc(obj.childObjects, [...currentPath, `${obj.key}.`])];
-      }
-      return acc;
     }
     return `${object.reduce(cb, '').join('\n').replace(/\n$/m, '')}`;
   }

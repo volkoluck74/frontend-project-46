@@ -17,7 +17,7 @@ export default function diff(obj1, obj2) {
     const hasObj2Key = Object.hasOwn(obj2, key);
     if (hasObj1Key && !hasObj2Key) return { key, value1, status: 'deleted' };
     if (!hasObj1Key && hasObj2Key) return { key, value2, status: 'added' };
-    if (typeof value1 === 'object' && typeof value2 === 'object') return { key, childObjects: diff(value1, value2) };
+    if (typeof value1 === 'object' && typeof value2 === 'object') return { key, status: 'parentObject', childObjects: diff(value1, value2) };
     if (hasObj1Key && hasObj2Key && value1 === value2 && (typeof value1 !== 'object' || typeof value2 !== 'object')) {
       return {
         key, value1, value2, status: 'unchanged',
